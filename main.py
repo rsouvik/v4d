@@ -23,7 +23,8 @@ class Outcome:
 @celery_app.task(bind=True, max_retries=3)
 def run_grid_task(self, grid_id: str, x: int, y: int):
 
-     redis_key = f"task_progress:{grid_id}:{i}:{j}"
+    task_id = self.request.id  # Get Celery task ID
+    redis_key = f"task_progress:{grid_id}:{i}:{j}"
 
     # Register the task in Redis
     redis_client.hset(redis_key, mapping={"status": "IN_PROGRESS", "progress": "0%", "task_id": task_id})
