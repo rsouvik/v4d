@@ -48,7 +48,7 @@ def run_grid_task(self, grid_id: str, x: int, y: int):
             redis_client.hset(redis_key, "status", "RETRIABLE_ERROR")
             return {"grid_id": grid_id, "x": x, "y": y, "status": Outcome.RETRIABLE_ERROR}
         elif r < 0.10 + 0.001:
-             redis_client.hset(redis_key, "status", "NON_RETRIABLE_ERROR")
+            redis_client.hset(redis_key, "status", "NON_RETRIABLE_ERROR")
             return {"grid_id": grid_id, "x": x, "y": y, "status": Outcome.NON_RETRIABLE_ERROR}
         else:
             time.sleep(random.uniform(1, 5))
