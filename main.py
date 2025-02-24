@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from celery import Celery
 import random
 import time
+import redis
 
 app = FastAPI()
 
