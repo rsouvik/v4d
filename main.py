@@ -10,12 +10,12 @@ app = FastAPI()
 # Setup Celery
 celery_app = Celery(
     "tasks",
-    broker="redis://localhost:6379/0",
-    backend="redis://localhost:6379/0"
+    broker="redis://0.0.0.0:6379/0",
+    backend="redis://0.0.0.0:6379/0"
 )
 
 # Connect to Redis (storing job progress)
-redis_client = redis.Redis(host="localhost", port=6379, db=2, decode_responses=True)
+redis_client = redis.Redis(host="0.0.0.0", port=6379, db=2, decode_responses=True)
 
 class Outcome:
     RETRIABLE_ERROR = "RETRIABLE_ERROR"
@@ -26,7 +26,7 @@ class Outcome:
 def run_grid_task(self, grid_id: str, x: int, y: int):
 
     task_id = self.request.id  # Get Celery task ID
-    redis_key = f"task_progress:{grid_id}:{i}:{j}"
+    redis_key = f"task_progress:{grid_id}:{x}:{y}"
 
     # Register the task in Redis
     redis_client.hset(redis_key, mapping={"status": "IN_PROGRESS", "progress": "0%", "task_id": task_id})
