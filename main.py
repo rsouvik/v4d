@@ -78,7 +78,7 @@ def grid_status(grid_id: str):
         _, _, i, j = key.split(":")  # Extract grid coordinates
         grid_data[f"({i},{j})"] = redis_client.hgetall(key)
 
-    return jsonify(grid_data)
+    return {"grid_id": grid_id, "status": grid_data}
     """return {"grid_id": grid_id, "status": "In Progress"}"""
 
 @app.post("/kill-grid/{grid_id}")
