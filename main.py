@@ -118,3 +118,20 @@ async def kill_job(grid_id: str, i: int, j: int):
         return JSONResponse(content={"grid_id": grid_id, "cell": f"({i},{j})", "task_id": task_id, "status": "KILLED"})
 
     raise HTTPException(status_code=404, detail="Task not found")
+
+@app.get("/redis-health")
+async def redis_health():
+    """
+    Checks if Redis is reachable and operational.
+    """
+    try:
+        # Try to set and get a test key
+        redis_client.set("health_check", "ok", ex=10)  # Expires in 10 seconds
+        value = redis_client.get("health_check")
+
+        if value == b"ok":
+            return {"status": "Redis is running and reachable"}
+        else:
+            return {"status": "Redis is not responding correctly"}, 500
+    except Exception as e:
+        return {"status": "Redis connection failed", "error": str(e)}, 500
