@@ -116,7 +116,7 @@ async def kill_grid(grid_id: str):
 
 
 @app.post("/kill-job/{grid_id}/{i}/{j}")
-async def kill_job(grid_id: str, i: int, j: int):
+def kill_job(grid_id: str, i: int, j: int):
     """
     Terminates a specific task running at (i, j) in grid_id.
     """
