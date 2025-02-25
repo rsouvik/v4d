@@ -10,12 +10,12 @@ app = FastAPI()
 # Setup Celery
 celery_app = Celery(
     "tasks",
-    broker="redis://ec2-54-86-4-114.compute-1.amazonaws.com:6379/0",
-    backend="redis://ec2-54-86-4-114.compute-1.amazonaws.com:6379/0"
+    broker="redis://localhost:6379/0",
+    backend="redis://localhost:6379/0"
 )
 
 # Connect to Redis (storing job progress)
-redis_client = redis.Redis(host="ec2-54-86-4-114.compute-1.amazonaws.com", port=6379, db=2, decode_responses=True)
+redis_client = redis.Redis(host="localhost", port=6379, db=2, decode_responses=True)
 
 class Outcome:
     RETRIABLE_ERROR = "RETRIABLE_ERROR"
