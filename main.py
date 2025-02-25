@@ -4,8 +4,21 @@ from celery import Celery
 import random
 import time
 import redis
+import logging
 
 app = FastAPI()
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,  # Log INFO and above (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("app.log"),  # Log to a file
+        logging.StreamHandler()  # Log to console
+    ]
+)
+
+logger = logging.getLogger(__name__)  # Create logger instance
 
 # Setup Celery
 celery_app = Celery(
@@ -108,11 +121,12 @@ async def kill_job(grid_id: str, i: int, j: int):
     Terminates a specific task running at (i, j) in grid_id.
     """
     redis_key = f"task_progress:{grid_id}:{i}:{j}"
-    print("redis key =" + redis_key)
+    logger.info(f"Killing task at {i}, {j} in grid {grid_id}")
+    logger.info(f"Redis key: {redis_key}")
     task_info = redis_client.hgetall(redis_key)
-    print("tast info = " + task_info)
+    logger.info(f"Task info: {task_info}")
     task_id = task_info.get("task_id")
-    print("task_id = " + task_id)
+    logger.info(f"Task ID: {task_id}")
 
     if task_id:
         run_grid_task.AsyncResult(task_id).revoke(terminate=True)
