@@ -35,7 +35,7 @@ def run_grid_task(self, grid_id: str, x: int, y: int):
     """Simulates task execution with random outcomes."""
     try:
         for step in range(5):
-            time.sleep(1)  # Simulate work
+            time.sleep(60)  # Simulate work
             progress = f"{(step+1) * 20}%"
             redis_client.hset(redis_key, "progress", progress)
 
