@@ -17,7 +17,7 @@ def test_factorial():
     assert factorial(4) == 24
     assert factorial(5) == 120
 
-class api:
+"""class api:
     def __init__(self):
         self.app = FastAPI()
 
@@ -31,7 +31,7 @@ class api:
 
     @self.app.post("/items/")
     def create_item(item: dict):
-        return item
+        return item"""
 
 if __name__ == "__main__":
 
